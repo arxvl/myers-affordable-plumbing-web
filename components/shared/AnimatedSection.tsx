@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface AnimatedSectionProps extends React.HTMLAttributes<HTMLDivElement> {
+// CHANGED: Extending HTMLMotionProps instead of React.HTMLAttributes to fix Vercel TS conflict
+interface AnimatedSectionProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
   delay?: number;
   direction?: "up" | "down" | "left" | "right" | "none";
