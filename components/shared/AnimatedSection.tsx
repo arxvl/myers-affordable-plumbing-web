@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { motion, HTMLMotionProps } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// CHANGED: Extending HTMLMotionProps instead of React.HTMLAttributes to fix Vercel TS conflict
-interface AnimatedSectionProps extends HTMLMotionProps<"div"> {
+// By explicitly omitting the conflicting animation and drag events, 
+// we prevent Vercel's strict type-checker from throwing an error.
+interface AnimatedSectionProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onAnimationStart" | "onDragStart" | "onDragEnd" | "onDrag"> {
   children: React.ReactNode;
   delay?: number;
   direction?: "up" | "down" | "left" | "right" | "none";
@@ -33,7 +34,7 @@ export function AnimatedSection({
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       className={cn("w-full", className)}
-      {...props}
+      {...(props as any)} // Type assertion ensures the spread doesn't trigger secondary Framer Motion conflicts
     >
       {children}
     </motion.div>
